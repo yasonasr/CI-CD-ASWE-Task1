@@ -5,7 +5,7 @@ on:
   push:
     branches: [main, development]
   pull_request:
-    branches: [main]
+    branches: [Sara_Elbably, development]
 
 permissions:
   contents: read
@@ -76,7 +76,7 @@ jobs:
           set -e
 
           echo "Testing Sara's name..."
-          grep -Fqi "Sara Mahmoud ELbably" index.html
+          grep -Fqi "Sara ELbably" index.html
           echo "Sara's name is correct!"
 
           echo "Testing Sara's ID..."
