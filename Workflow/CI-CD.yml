@@ -1,0 +1,96 @@
+
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Website
+        run: |
+          set -e
+          test -s index.html
+          mkdir -p dist
+          cp index.html dist/index.html
+          echo "Build completed successfully!"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: dist/index.html
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Test HTML Structure
+        run: |
+          set -e
+          test -s index.html
+          grep -qi "<html" index.html
+          grep -qi "</html>" index.html
+          echo "HTML structure tests passed!"
+
+      - name: Test Yasmeen's Information
+        run: |
+          set -e
+
+          echo "Testing Yasmeen's name..."
+          grep -Fqi "Yasmeen Nasreddin" index.html
+          echo "Yasmeen's name is correct!"
+
+          echo "Testing Yasmeen's ID..."
+          grep -Fq "20242395" index.html
+          echo "Yasmeen's ID is correct!"
+
+          echo "Checking Yasmeen's placeholders..."
+          if grep -Eqi "YOUR_NAME|YOUR_ID|YASMEEN_NAME|YASMEEN_ID" index.html; then
+            echo "ERROR: Yasmeen's placeholders still exist."
+            exit 1
+          fi
+
+          echo "Yasmeen's placeholders have been removed!"
+          echo "Yasmeen's information tests passed!"
+
+      - name: Test Sara's Information
+        run: |
+          set -e
+
+          echo "Testing Sara's name..."
+          grep -Fqi "Sara Mahmoud ELbably" index.html
+          echo "Sara's name is correct!"
+
+          echo "Testing Sara's ID..."
+          grep -Fq "20242152" index.html
+          echo "Sara's ID is correct!"
+
+          echo "Checking Sara's placeholders..."
+          if grep -Eqi "FRIEND_NAME|FRIEND_ID" index.html; then
+            echo "ERROR: Sara's placeholders still exist."
+            exit 1
+          fi
+
+          echo "Sara's placeholders have been removed!"
+          echo "Sara's information tests passed!"
+
+      - name: Final Test Result
+        run: echo "All build and student information tests passed!"
