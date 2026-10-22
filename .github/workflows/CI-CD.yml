@@ -3,9 +3,9 @@ name: CI-CD Pipeline
 
 on:
   push:
-    branches: [main, development]
+    branches: [main,Yasmeen,Sara_Elbably]
   pull_request:
-    branches: [Sara_Elbably, development]
+    branches: [main]
 
 permissions:
   contents: read
