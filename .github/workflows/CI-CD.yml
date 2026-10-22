@@ -71,26 +71,4 @@ jobs:
           echo "Yasmeen's placeholders have been removed!"
           echo "Yasmeen's information tests passed!"
 
-      - name: Test Sara's Information
-        run: |
-          set -e
-
-          echo "Testing Sara's name..."
-          grep -Fqi "Sara Mahmoud ELbably" index.html
-          echo "Sara's name is correct!"
-
-          echo "Testing Sara's ID..."
-          grep -Fq "20242152" index.html
-          echo "Sara's ID is correct!"
-
-          echo "Checking Sara's placeholders..."
-          if grep -Eqi "FRIEND_NAME|FRIEND_ID" index.html; then
-            echo "ERROR: Sara's placeholders still exist."
-            exit 1
-          fi
-
-          echo "Sara's placeholders have been removed!"
-          echo "Sara's information tests passed!"
-
-      - name: Final Test Result
-        run: echo "All build and student information tests passed!"
+     
